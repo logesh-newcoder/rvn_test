@@ -1,0 +1,194 @@
+<div class="cus-cs-temps">
+    <button class="slider-btn prev" aria-label="Previous">&#10094;</button>
+
+    <div class="cus-cs-a">
+        <div class="cus-cs-v1" id="dragSlider">
+            <div class="cus-cs-box">
+                <div class="cus-cs-img">
+                    <img src="https://picsum.photos/600/360?1" alt="">
+                </div>
+                <div class="cus-cs-info"><h1>Dance Show</h1></div>
+            </div>
+            <div class="cus-cs-box">
+                <div class="cus-cs-img">
+                    <img src="https://picsum.photos/600/360?2" alt="">
+                </div>
+                <div class="cus-cs-info"><h1>Music Show</h1></div>
+            </div>
+            <div class="cus-cs-box">
+                <div class="cus-cs-img">
+                    <img src="https://picsum.photos/600/360?3" alt="">
+                </div>
+                <div class="cus-cs-info"><h1>Solo Dance Show</h1></div>
+            </div>
+            <div class="cus-cs-box">
+                <div class="cus-cs-img">
+                    <img src="https://picsum.photos/600/360?4" alt="">
+                </div>
+                <div class="cus-cs-info"><h1>Boys Dance Show</h1></div>
+            </div>
+            <div class="cus-cs-box">
+                <div class="cus-cs-img">
+                    <img src="https://picsum.photos/600/360?5" alt="">
+                </div>
+                <div class="cus-cs-info"><h1>Girls Dance Show</h1></div>
+            </div>
+        </div>
+    </div>
+
+    <button class="slider-btn next" aria-label="Next">&#10095;</button>
+</div>
+
+<style>
+:root {
+  --nf-bg: #0f1720;
+  --nf-text: #e6eef8;
+  --accent: #77b3f7;
+  --card-bg: #111826;
+}
+
+/* Wrapper */
+.cus-cs-temps {
+  width: 90%;
+  margin: auto;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  position: relative;
+}
+
+/* Slider Area */
+.cus-cs-a {
+  width: calc(100% - 120px);
+  overflow: hidden;
+}
+
+.cus-cs-v1 {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 8px;
+  scroll-behavior: smooth;
+  overflow-x: auto;
+  user-select: none;
+  cursor: grab;
+  scrollbar-width: none;
+}
+.cus-cs-v1::-webkit-scrollbar { display: none; }
+.cus-cs-v1:active { cursor: grabbing; }
+
+/* Cards */
+.cus-cs-box {
+  flex: 0 0 300px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .2s;
+}
+.cus-cs-box:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 18px 40px rgba(2,6,23,0.7);
+}
+
+/* Morphing border effect for each image */
+.cus-cs-img {
+  width: 100%;
+  height: 200px;
+  border: 4px solid rgba(119,179,247,0.4);
+  border-radius: 50%;
+  overflow: hidden;
+  animation: borderMorph 6s ease-in-out infinite alternate;
+  box-sizing: border-box;
+  position: relative;
+  transition: border-color .3s;
+}
+.cus-cs-img:hover {
+  border-color: var(--accent);
+  animation: none;
+  border-radius:0 ;
+}
+.cus-cs-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;
+    transition: all 1s ease-in-out;
+}
+
+@keyframes borderMorph {
+  0%   { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
+  25%  { border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%; }
+  50%  { border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%; }
+  75%  { border-radius: 61% 39% 67% 33% / 70% 50% 50% 30%; }
+  100% { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
+}
+
+.cus-cs-info {
+  padding: 14px;
+  text-align: center;
+}
+.cus-cs-info h1 {
+  margin: 0;
+  color: var(--accent);
+  font-size: 1.05rem;
+}
+
+/* Navigation Buttons */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(2,6,23,0.6);
+  color: var(--nf-text);
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+  z-index: 10;
+}
+.slider-btn:hover {
+  background: rgba(2,6,23,0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+.slider-btn.prev { left: 12px; }
+.slider-btn.next { right: 12px; }
+
+@media (max-width: 600px) {
+  .cus-cs-box { flex: 0 0 80%; }
+}
+</style>
+
+<script>
+(() => {
+  const slider = document.getElementById('dragSlider');
+  const prevBtn = document.querySelector('.slider-btn.prev');
+  const nextBtn = document.querySelector('.slider-btn.next');
+  let isDown = false, startX, scrollLeft;
+
+  slider.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+  slider.addEventListener('mouseleave', () => isDown = false);
+  slider.addEventListener('mouseup', () => isDown = false);
+  slider.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    slider.scrollLeft = scrollLeft - (x - startX);
+  });
+
+  prevBtn.addEventListener('click', () => slider.scrollBy({ left: -300, behavior: 'smooth' }));
+  nextBtn.addEventListener('click', () => slider.scrollBy({ left: 300, behavior: 'smooth' }));
+})();
+</script>
