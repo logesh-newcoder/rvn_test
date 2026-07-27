@@ -38,7 +38,7 @@
     gap: 16px;
 }
 .parta .report-a {
-    width: 30%;
+    width: 35%;
     height: 175px;
     border-radius: 6px;
     overflow: hidden;
@@ -46,11 +46,12 @@
 }
 .parta .report-a img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    margin: 0 auto;
+    display: block;
 }
 .parta .report-b {
-    width: 70%;
+    width: 65%;
 }
 .parta .report-b table {
     width: 100%;
@@ -75,10 +76,10 @@
 }
 .parta .report-b td span {
     display: block;
-    font-size: 1rem;
+    font-size: 0.7rem;
     font-weight: 400;
     color: #6b7280;
-    margin-top: 2px;
+    margin-top: 4px;
 }
 .partb {
     display: flex;
@@ -107,14 +108,14 @@
 }
 .partb .report-b td span {
     display: block;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 0.7rem;
+    font-weight: 400;
     color: #6b7280;
     margin-top: 4px;
 }
 .partb .report-b tr.remarks-row td {
     width: 100%;
-    background-color: #fffbeb; /* Soft yellow background */
+    background-color: #fffbeb; 
     border: 1px solid #fef3c7;
     color: #111827;
     font-weight: 500;
@@ -129,7 +130,7 @@
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    padding: 20px 24px;
+    padding: 10px 14px;
     margin: auto;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -139,7 +140,7 @@
     align-items: center;
 }
 .partc .summary-title {
-    font-size: 1.7rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #1f2937;
 }
@@ -165,7 +166,7 @@
     color: #ffffff;
     padding: 6px 12px;
     border-radius: 6px;
-    font-size: 1.2rem;
+    font-size: 0.7rem;
     font-weight: 700;
 }
 .partc  .rating-grid {
@@ -180,7 +181,7 @@
     gap: 6px;
 }
 .partc .rating-label {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: #374151;
 }
@@ -225,7 +226,7 @@
     color: #ffffff;
     padding: 3px 8px;
     border-radius: 4px;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-weight: 700;
 }
 .partc .summary-legend {
@@ -253,7 +254,7 @@
 .partc .dot.poor { background-color: #ef4444; }
 
 .inspection-title{
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: 700;
 }
 .inspection-section{
@@ -271,7 +272,7 @@
     gap: 15px;
 }
 .partd .section-name{
-    font-size:1.6rem;
+    font-size:1rem;
     font-weight:700;
     margin-bottom: 5px;
 }
@@ -283,11 +284,11 @@
 .partd .inspection-item{
     display:flex;
     align-items:center;
-    font-size: 1.2rem;
-    line-height:14px;
+    font-size: 1rem;
+    padding: 8px 0;
 }
 .partd .status-icon{
-    width:15px;
+    width:10px;
     text-align:center;
     font-size: 0.8rem;
     font-weight:bold;
@@ -305,6 +306,3 @@
 .partd .inspection-name{
     color:#222;
 }
-
-</style>
-<%@include file="../../CommonJSP/pageFooter.jsp" %>
