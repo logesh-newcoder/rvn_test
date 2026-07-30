@@ -409,55 +409,62 @@
     border:1px solid #d8d8d8;
     padding:12px;
     background:#fafafa;
-    font-size:13px;
-    color:#666;
+    font-size: 1rem;
+    color:#222222;
     line-height:20px;
     margin-bottom:25px;
 }
 .report-disclaimer p{
     margin:3px 0;
 }
+
 .report-footer{
+    width:100%;
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:30px;
+    flex-direction:column;
+    gap:25px;
+    margin-top:20px;
 }
 .download-section{
-    width:170px;
-    text-align:center;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    gap:25px;
 }
-
 .download-link{
-    text-decoration:none;
-    color:#666;
     display:flex;
     flex-direction:column;
     align-items:center;
-    gap:6px;
+    text-decoration:none;
+    color:#222222;
 }
-
-.download-icon{
+.download-link i{
     font-size:48px;
-    color:#ff6b2d;
+    color:#ff6b35;
+    margin-bottom:6px;
 }
-
+.download-link span{
+    font-size:13px;
+    white-space:nowrap;
+}
 .remarks-section{
-    flex:1;
+    width:100%;
     display:flex;
     align-items:center;
     gap:15px;
 }
 .remarks-title{
-    font-size:20px;
+    width:110px;
+    font-size: 1.3rem;
     font-weight:700;
 }
-
 .remarks-box{
     flex:1;
     min-height:60px;
-    border:1px solid #cfcfcf;
+    border:1px solid #d5d5d5;
+    border-radius: 4px;
     padding:10px;
-    font-size:14px;
-    background:#fff;
+    font-size: 1rem;
+    line-height:22px;
 }
