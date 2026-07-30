@@ -38,8 +38,8 @@
     gap: 16px;
 }
 .parta .report-a {
-    width: 35%;
-    height: 210px;
+    width: 40%;
+    height: max-content;
     border-radius: 6px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
@@ -51,9 +51,10 @@
     border-radius:4px;
     display:block;
     margin: 0 auto;
+    padding: 8px;
 }
 .parta .report-b {
-    width: 65%;
+    width: 60%;
 }
 .parta .report-b table {
     width: 100%;
@@ -98,14 +99,13 @@
 .partb .report-b table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 10px;
 }
 .partb .report-b td {
     width: 25%;
     background-color: #f9fafb;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    padding: 12px 14px;
+    padding: 8px 14px;
     font-weight: 700;
     color: #111827;
     vertical-align: top;
@@ -137,7 +137,6 @@
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
-    padding: 10px 14px;
     margin: auto;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
