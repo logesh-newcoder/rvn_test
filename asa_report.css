@@ -17,14 +17,14 @@
     padding-bottom: 8px;
 }
 .report-title {
-    font-size: 1.1rem;
+    font-size: 1.7rem;
     font-weight: 700;
     color: #111827;
 }
 .report-badge {
     background-color: #e5e7eb;
     color: #4b5563;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 600;
     padding: 4px 10px;
     border-radius: 4px;
@@ -44,11 +44,13 @@
     overflow: hidden;
     border: 1px solid #e5e7eb;
 }
-.parta .report-a img {
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    display: block;
+.parta .report-a img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+    object-position:center;
+    border-radius:8px;
+    display:block;
 }
 .parta .report-b {
     width: 65%;
@@ -69,18 +71,20 @@
     border-bottom: none;
 }
 .parta .report-b td {
-    padding: 6px 8px;
+    padding: 8px;
     font-weight: 600;
     color: #1f2937;
     width: 50%;
+    font-size: 1.2rem;
 }
 .parta .report-b td span {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     font-weight: 400;
     color: #6b7280;
     margin-top: 4px;
 }
+
 .partb {
     display: flex;
     flex-direction: row;
@@ -105,10 +109,11 @@
     font-weight: 700;
     color: #111827;
     vertical-align: top;
+    font-size: 1.2rem;
 }
 .partb .report-b td span {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     font-weight: 400;
     color: #6b7280;
     margin-top: 4px;
@@ -120,11 +125,13 @@
     color: #111827;
     font-weight: 500;
     padding: 12px 16px;
+    font-size: 1.2rem;    
 }
 .partb .report-b tr.remarks-row td strong {
     font-weight: 700;
     color: #111827;
 }
+
 .partc {
     width: 100%;
     background: #ffffff;
@@ -140,7 +147,7 @@
     align-items: center;
 }
 .partc .summary-title {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #1f2937;
 }
@@ -181,7 +188,7 @@
     gap: 6px;
 }
 .partc .rating-label {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: #374151;
 }
@@ -254,7 +261,7 @@
 .partc .dot.poor { background-color: #ef4444; }
 
 .inspection-title{
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
 .inspection-section{
@@ -272,26 +279,25 @@
     gap: 15px;
 }
 .partd .section-name{
-    font-size:1rem;
+    font-size:1.3rem;
     font-weight:700;
     margin-bottom: 5px;
 }
 .partd .inspection-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:12px;
+    gap:7px;
 }
 .partd .inspection-item{
     display:flex;
     align-items:center;
-    font-size: 1rem;
-    padding: 8px 0;
+    font-size: 1.2rem;
+    padding: 3px 0;
 }
 .partd .status-icon{
     width:10px;
     text-align:center;
     font-size: 0.8rem;
-    font-weight:bold;
     margin-right:8px;
 }
 .partd .status-icon.pass{
@@ -305,4 +311,56 @@
 }
 .partd .inspection-name{
     color:#222;
+}
+
+.report-header-center {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.report-header-center h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+}
+.reportdata.parte {
+    width: 100%;
+    overflow-x: auto;
+}
+.reportdata.parte table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    border: 1px solid #e5e7eb;
+}
+.reportdata.parte th {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #374151;
+}
+.reportdata.parte td {
+    border: 1px solid #e5e7eb;
+    padding: 8px 12px;
+    font-size: 0.825rem;
+    color: #374151;
+    word-break: break-word;
+}
+.reportdata.parte td:nth-child(1),
+.reportdata.parte td:nth-child(3) {
+    font-weight: 500;
+    color: #6b7280;
+    width: 25%;
+}
+.reportdata.parte td:nth-child(2),
+.reportdata.parte td:nth-child(4) {
+    font-weight: 600;
+    color: #111827;
+    width: 25%;
+}
+.reportdata.parte tbody tr:nth-child(even) {
+    background-color: #fafafa;
 }
