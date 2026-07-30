@@ -106,7 +106,6 @@
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 6px 14px;
-    margin: 8px;
     font-weight: 700;
     color: #111827;
     vertical-align: top;
@@ -125,7 +124,7 @@
     border: 1px solid #fef3c7;
     color: #111827;
     font-weight: 500;
-    padding: 12px 16px;
+    padding: 6px 14px;
     font-size: 1.4rem;    
 }
 .partb .report-b tr.remarks-row td strong {
@@ -180,8 +179,8 @@
 .partc .rating-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 0.8rem;
-    row-gap: 10px;
+    /* column-gap: 0.8rem;
+    row-gap: 10px; */
     margin: 0 auto;
 }
 .partc .rating-item {
