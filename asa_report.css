@@ -106,6 +106,7 @@
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     padding: 8px 14px;
+    margin: 2px auto;
     font-weight: 700;
     color: #111827;
     vertical-align: top;
@@ -138,6 +139,7 @@
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     margin: auto;
+    padding: 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 .partc .summary-header {
@@ -180,6 +182,7 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 0.8rem;
     row-gap: 10px;
+    margin: 0 auto;
 }
 .partc .rating-item {
     display: flex;
@@ -360,4 +363,101 @@
 }
 .reportdata.parte tbody tr:nth-child(even) {
     background-color: #fafafa;
+}
+
+.partf{
+    width:100%;
+}
+.image-gallery{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+.gallery-item{
+    border:1px solid #dcdcdc;
+    background:#fff;
+}
+.gallery-image{
+    height:220px;
+    overflow:hidden;
+}
+.gallery-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+.gallery-footer{
+    padding:6px 8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+}
+.gallery-footer a{
+    color:#0d6efd;
+    text-decoration:none;
+}
+.page-break{
+    page-break-before:always;
+}
+
+.partg{
+    padding:20px;
+}
+.report-disclaimer{
+    border:1px solid #d8d8d8;
+    padding:12px;
+    background:#fafafa;
+    font-size:13px;
+    color:#666;
+    line-height:20px;
+    margin-bottom:25px;
+}
+.report-disclaimer p{
+    margin:3px 0;
+}
+.report-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:30px;
+}
+.download-section{
+    width:170px;
+    text-align:center;
+}
+
+.download-link{
+    text-decoration:none;
+    color:#666;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+}
+
+.download-icon{
+    font-size:48px;
+    color:#ff6b2d;
+}
+
+.remarks-section{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+.remarks-title{
+    font-size:20px;
+    font-weight:700;
+}
+
+.remarks-box{
+    flex:1;
+    min-height:60px;
+    border:1px solid #cfcfcf;
+    padding:10px;
+    font-size:14px;
+    background:#fff;
 }
