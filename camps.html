@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard Framework</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts (Inter) -->
@@ -22,6 +22,7 @@
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             background-color: #f8fafc;
+            color: #1e293b;
         }
 
         a {
@@ -33,33 +34,42 @@
             list-style: none;
         }
 
-        /* Base Grid Layout */
+        /* Root Main Layout Grid Structure */
         .cs-main-container-structure {
             width: 100%;
             height: 100vh;
             display: grid;
-            grid-template-columns: 280px 1fr;
+            grid-template-columns: 310px 1fr;
             grid-template-rows: 64px 1fr 42px;
             grid-template-areas:
                 "left top"
                 "left middle"
                 "left bottom";
-            transition: grid-template-columns 0.3s ease;
+            transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Collapsed Sidebar Layout for Desktop */
+        /* Desktop Collapsed Sidebar State */
         .cs-main-container-structure.sidebar-collapsed {
-            grid-template-columns: 70px 1fr;
+            grid-template-columns: 72px 1fr;
         }
 
-        .cs-main-container-structure.sidebar-collapsed .cs-menu-label span,
+        .cs-main-container-structure.sidebar-collapsed .cs-menu-label span:not(.cs-icon-wrapper),
         .cs-main-container-structure.sidebar-collapsed .arrow,
-        .cs-main-container-structure.sidebar-collapsed .cs-left-top img {
-            display: none;
+        .cs-main-container-structure.sidebar-collapsed .cs-left-top img,
+        .cs-main-container-structure.sidebar-collapsed .cs-submenu {
+            display: none !important;
         }
 
         .cs-main-container-structure.sidebar-collapsed .cs-left-top {
             justify-content: center;
+            padding: 10px 0;
+        }
+
+        .cs-main-container-structure.sidebar-collapsed .cs-left-top::after {
+            content: "CS";
+            color: #38bdf8;
+            font-weight: 800;
+            font-size: 1.4rem;
         }
 
         .cs-main-container-structure.sidebar-collapsed .cs-sidebar-menu a {
@@ -67,7 +77,9 @@
             padding: 0.75rem 0;
         }
 
-        /* Left Sidebar Structure */
+        /* ==========================================
+           LEFT SIDEBAR STYLING
+        ========================================== */
         .cs-container-left {
             grid-area: left;
             width: 100%;
@@ -77,6 +89,7 @@
             flex-direction: column;
             border-right: 1px solid #1e293b;
             z-index: 100;
+            user-select: none;
         }
 
         .cs-container-left .cs-left-top {
@@ -85,12 +98,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: #091322;
         }
 
         .cs-container-left .cs-left-top img {
-            max-width: 180px;
-            max-height: 40px;
+            max-width: 190px;
+            max-height: 42px;
             object-fit: contain;
         }
 
@@ -98,48 +112,126 @@
             width: 100%;
             flex: 1;
             overflow-y: auto;
-            padding: 1rem 0.5rem;
+            overflow-x: hidden;
+            padding: 0.75rem 0.5rem;
+        }
+
+        /* Custom Scrollbar for Dark Sidebar */
+        .cs-left-full::-webkit-scrollbar {
+            width: 5px;
+        }
+        .cs-left-full::-webkit-scrollbar-track {
+            background: #0d192b;
+        }
+        .cs-left-full::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+
+        /* Nested Menu Tree Hierarchy Styling */
+        .cs-sidebar-menu, .cs-submenu {
+            width: 100%;
+        }
+
+        .cs-submenu {
+            display: none;
+            padding-left: 0.85rem;
+            position: relative;
+        }
+
+        /* Left vertical guide line for deep nested menus */
+        .cs-submenu::before {
+            content: '';
+            position: absolute;
+            left: 1.25rem;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.08);
         }
 
         .cs-sidebar-menu li {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.2rem;
+            position: relative;
         }
 
         .cs-sidebar-menu a {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.75rem 1rem;
+            padding: 0.65rem 0.85rem;
             color: #94a3b8;
-            border-radius: 6px;
+            border-radius: 8px;
+            font-size: 0.875rem;
             transition: all 0.2s ease;
+            cursor: pointer;
         }
 
-        .cs-sidebar-menu a:hover,
+        .cs-sidebar-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+        }
+
+        /* Active Leaf Node State */
         .cs-sidebar-menu li.active > a {
-            background-color: #1e293b;
-            color: #ffffff;
+            background-color: #2563eb;
+            color: #ffffff !important;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Active Parent Path Trail Highlighting */
+        .cs-sidebar-menu li.active-path > a {
+            color: #38bdf8;
+            font-weight: 600;
+            background-color: rgba(56, 189, 248, 0.08);
         }
 
         .cs-menu-label {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .cs-menu-label i {
+        .cs-icon-wrapper {
             width: 20px;
-            text-align: center;
-            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.05rem;
+            flex-shrink: 0;
         }
 
         .cs-sidebar-menu .arrow {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #64748b;
         }
 
-        /* Top Header Structure */
+        /* Expanded Submenu Arrow Indicator */
+        .cs-sidebar-menu li.open > a > .arrow {
+            transform: rotate(90deg);
+            color: #38bdf8;
+        }
+
+        /* Badge Pills in Menu Items */
+        .cs-menu-badge {
+            background-color: #38bdf8;
+            color: #0f172a;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 12px;
+            margin-left: auto;
+            margin-right: 6px;
+        }
+
+        /* ==========================================
+           TOP HEADER STYLING
+        ========================================== */
         .cs-container-top {
             grid-area: top;
             width: 100%;
@@ -151,24 +243,27 @@
             justify-content: space-between;
             padding: 0 1.5rem;
             position: relative;
+            z-index: 80;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
         .cs-container-top-left {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .cs-hamburger {
             cursor: pointer;
             font-size: 1.2rem;
-            color: #64748b;
+            color: #475569;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
         }
 
         .cs-hamburger:hover {
@@ -181,6 +276,7 @@
             display: none;
             cursor: pointer;
             color: #64748b;
+            font-size: 1.1rem;
         }
 
         .cs-container-search {
@@ -188,9 +284,18 @@
             align-items: center;
             gap: 10px;
             background-color: #f1f5f9;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            width: 260px;
+            padding: 0.55rem 1rem;
+            border-radius: 8px;
+            width: 320px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .cs-container-search:focus-within {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
         }
 
         .cs-container-search i {
@@ -203,17 +308,70 @@
             background: transparent;
             width: 100%;
             font-size: 0.875rem;
-            color: #334155;
+            color: #1e293b;
+        }
+
+        /* VS Code Style Quick-Open Search Dropdown */
+        .cs-search-palette {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 380px;
+            max-width: 90vw;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            max-height: 350px;
+            overflow-y: auto;
+            padding: 6px;
+        }
+
+        .cs-search-palette.active {
+            display: block;
+        }
+
+        .cs-palette-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        .cs-palette-item:hover, .cs-palette-item.selected {
+            background-color: #eff6ff;
+        }
+
+        .cs-palette-item .item-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cs-palette-item .item-path {
+            font-size: 0.75rem;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
         }
 
         .cs-container-right {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1.25rem;
             position: relative;
         }
 
-        /* Notification Icon & Dropdown Container */
+        /* Fixed Notification Dropdown Positioning */
         .cs-notification-wrapper {
             position: relative;
         }
@@ -222,124 +380,112 @@
             position: relative;
             cursor: pointer;
             color: #64748b;
-            font-size: 1.25rem;
-            padding: 8px;
-            border-radius: 50%;
+            font-size: 1.2rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: background 0.2s;
         }
 
         .cs-notification:hover {
             background-color: #f1f5f9;
+            color: #0f172a;
         }
 
         .cs-notification-badge {
             position: absolute;
-            top: 2px;
-            right: 2px;
+            top: 4px;
+            right: 4px;
             background-color: #ef4444;
             color: white;
             font-size: 0.65rem;
             font-weight: 700;
-            min-width: 18px;
+            width: 18px;
             height: 18px;
-            padding: 0 4px;
-            border-radius: 10px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 2px solid #ffffff;
         }
 
-        /* Notification Dropdown Panel */
-        .cs-notification-dropdown {
+        .cs-dropdown-panel {
             display: none;
             position: absolute;
+            top: calc(100% + 12px);
             right: 0;
-            top: 50px;
             width: 340px;
+            max-width: 90vw;
             background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            z-index: 200;
+            z-index: 1000;
             overflow: hidden;
         }
 
-        .cs-notification-dropdown.show {
+        .cs-dropdown-panel.active {
             display: block;
         }
 
-        .cs-dropdown-header {
-            text-align: center;
-            padding: 12px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #334155;
-            letter-spacing: 0.5px;
+        .cs-panel-header {
+            padding: 12px 16px;
             border-bottom: 1px solid #e2e8f0;
-            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: #f8fafc;
         }
 
-        .cs-notification-list {
+        .cs-panel-body {
             max-height: 300px;
             overflow-y: auto;
-            position: relative;
         }
 
-        /* Swipeable Notification Item */
         .cs-notification-item {
-            position: relative;
             padding: 12px 16px;
             border-bottom: 1px solid #f1f5f9;
-            background: #ffffff;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            transition: transform 0.2s ease, opacity 0.2s ease;
             user-select: none;
-            touch-action: pan-y;
-            transition: transform 0.1s ease-out, opacity 0.2s ease;
         }
 
-        .cs-notification-item.dismissing {
-            transform: translateX(100%) !important;
-            opacity: 0;
+        .cs-notification-item:hover {
+            background: #f8fafc;
         }
 
-        .cs-notification-text {
-            font-size: 0.85rem;
-            color: #475569;
-            padding-right: 10px;
+        .cs-notification-item .notif-text {
+            font-size: 0.825rem;
+            color: #334155;
+            line-height: 1.4;
         }
 
-        .cs-notification-close {
-            cursor: pointer;
+        .cs-notification-item .notif-time {
+            font-size: 0.7rem;
             color: #94a3b8;
-            font-size: 1rem;
-            padding: 4px;
-            transition: color 0.2s;
+            margin-top: 4px;
         }
 
-        .cs-notification-close:hover {
+        .cs-notification-item .dismiss-btn {
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 2px 4px;
+            font-size: 0.85rem;
+        }
+
+        .cs-notification-item .dismiss-btn:hover {
             color: #ef4444;
         }
 
-        .cs-dropdown-footer {
-            text-align: center;
-            padding: 12px;
-            border-top: 1px solid #e2e8f0;
-            background: #ffffff;
-        }
-
-        .cs-dropdown-footer a {
-            color: #1e1b4b;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .cs-dropdown-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Profile & Dropdown Menu */
+        /* Profile Dropdown Styling */
         .cs-profile-wrapper {
             position: relative;
         }
@@ -350,7 +496,122 @@
             gap: 10px;
             cursor: pointer;
             padding: 4px 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .cs-profile:hover {
+            background-color: #f1f5f9;
+        }
+
+        .cs-profile-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 200px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            z-index: 1000;
+            padding: 6px;
+        }
+
+        .cs-profile-dropdown.active {
+            display: block;
+        }
+
+        .cs-profile-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            color: #334155;
             border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .cs-profile-menu-item:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .cs-profile-menu-item.danger:hover {
+            background-color: #fef2f2;
+            color: #ef4444;
+        }
+
+        .cs-container-search:focus-within {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .cs-container-search i {
+            color: #94a3b8;
+        }
+
+        .cs-container-search input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 0.875rem;
+            color: #1e293b;
+        }
+
+        .cs-container-right {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .cs-notification {
+            position: relative;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 1.2rem;
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .cs-notification:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .cs-notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+        }
+
+        .cs-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
             transition: background 0.2s;
         }
 
@@ -362,13 +623,14 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background-color: #1e1b4b;
+            background: linear-gradient(135deg, #2563eb, #38bdf8);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            font-size: 0.875rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
         }
 
         .cs-profile-details {
@@ -377,70 +639,82 @@
         }
 
         .cs-profile-name {
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: #1e293b;
         }
 
         .cs-profile-role {
-            font-size: 0.75rem;
+            font-size: 0.725rem;
             color: #64748b;
         }
 
-        /* Profile Dropdown Menu */
-        .cs-profile-dropdown {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 50px;
-            width: 200px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            z-index: 200;
-            overflow: hidden;
-        }
-
-        .cs-profile-dropdown.show {
-            display: block;
-        }
-
-        .cs-profile-dropdown a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            font-size: 0.875rem;
-            color: #1e1b4b;
-            font-weight: 500;
-            border-bottom: 1px solid #f1f5f9;
-            transition: background 0.2s;
-        }
-
-        .cs-profile-dropdown a:last-child {
-            border-bottom: none;
-        }
-
-        .cs-profile-dropdown a:hover {
-            background-color: #f8fafc;
-        }
-
-        .cs-profile-dropdown i {
-            font-size: 1.1rem;
-            color: #1e1b4b;
-        }
-
-        /* Main Content Structure */
+        /* ==========================================
+           MAIN CONTENT AREA STYLING
+        ========================================== */
         .cs-container-full {
             grid-area: middle;
             width: 100%;
             height: 100%;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
-        /* Bottom Footer Structure */
+        .cs-content-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .cs-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.825rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .cs-breadcrumb span.active-crumb {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .cs-content-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .cs-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .cs-dashboard-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+
+        .cs-card-title {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .cs-card-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* ==========================================
+           BOTTOM FOOTER STYLING
+        ========================================== */
         .cs-container-bottom {
             grid-area: bottom;
             width: 100%;
@@ -451,7 +725,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 1.5rem;
-            font-size: 0.75rem;
+            font-size: 0.775rem;
             color: #64748b;
         }
 
@@ -463,15 +737,28 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 90;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(2px);
+            z-index: 95;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .cs-sidebar-backdrop.active {
             display: block;
+            opacity: 1;
         }
 
-        /* Mobile Responsiveness */
+        /* Search No Results View */
+        .cs-no-results {
+            display: none;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Breakpoints */
         @media (max-width: 768px) {
             .cs-main-container-structure {
                 grid-template-columns: 1fr;
@@ -483,10 +770,10 @@
 
             .cs-container-left {
                 position: fixed;
-                left: -280px;
+                left: -310px;
                 top: 0;
-                width: 280px;
-                transition: left 0.3s ease;
+                width: 310px;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
 
             .cs-container-left.mobile-open {
@@ -511,14 +798,18 @@
                 z-index: 10;
                 border-radius: 0;
                 background: #ffffff;
-                padding: 0 1rem;
+                padding: 0 1.5rem;
             }
 
             .cs-search-close.active {
                 display: block;
                 position: absolute;
-                right: 1rem;
+                right: 1.5rem;
                 z-index: 11;
+            }
+
+            .cs-profile-details {
+                display: none;
             }
         }
     </style>
@@ -526,100 +817,356 @@
 
 <body>
 
+    <!-- Mobile Drawer Dark Backdrop Overlay -->
     <div class="cs-sidebar-backdrop" id="sidebarBackdrop"></div>
 
     <div class="cs-main-container-structure" id="mainContainer">
 
-        <!-- Sidebar Section -->
+        <!-- ==========================================
+             LEFT SIDEBAR (MULTI-LEVEL NESTED ACCORDION)
+        ========================================== -->
         <aside class="cs-container-left" id="sidebar">
             <div class="cs-left-top">
-                <img src="https://cdn.campusstack.in/clients/csc/logo.png" alt="Company Logo">
+                <img src="https://cdn.campusstack.in/clients/csc/logo.png" alt="Campus Stack Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span style="display:none; color:white; font-weight:700; font-size:1.1rem; letter-spacing:0.5px;">CAMPUS STACK</span>
             </div>
+
             <div class="cs-left-full">
+                <!-- Search Filter Placeholder when empty -->
+                <div class="cs-no-results" id="noResultsMsg">
+                    <i class="fa-solid fa-magnifying-glass" style="margin-bottom:8px; font-size:1.2rem;"></i><br>
+                    No matching menu options found
+                </div>
+
                 <ul class="cs-sidebar-menu" id="sidebarMenu">
-                    <li>
+                    <!-- LEVEL 1: Dashboard -->
+                    <li data-id="dashboard">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-solid fa-house"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-solid fa-house"></i></span>
                                 <span>Dashboard</span>
                             </span>
                         </a>
                     </li>
-                    <li>
+
+                    <!-- LEVEL 1: Vehicles -->
+                    <li data-id="vehicles">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-solid fa-car-side"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-solid fa-car-side"></i></span>
                                 <span>Vehicles</span>
                             </span>
                             <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="all-vehicles">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>All Vehicles</span></span>
+                                </a>
+                            </li>
+                            <li data-id="add-vehicle">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Add Vehicle</span></span>
+                                </a>
+                            </li>
+                            <li data-id="maintenance-logs">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Maintenance Logs</span></span>
+                                </a>
+                            </li>
+                            <li data-id="fleet-tracking">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Fleet Tracking</span></span>
+                                    <i class="fa-solid fa-chevron-right arrow"></i>
+                                </a>
+                                <ul class="cs-submenu">
+                                    <li data-id="gps-status">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>GPS Status</span></span>
+                                        </a>
+                                    </li>
+                                    <li data-id="driver-assignments">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Driver Assignments</span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="active">
+
+                    <!-- LEVEL 1: Bookings -->
+                    <li data-id="bookings" class="active">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-regular fa-calendar-check"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-regular fa-calendar-check"></i></span>
                                 <span>Bookings</span>
                             </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="active-bookings">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Active Bookings</span></span>
+                                </a>
+                            </li>
+                            <li data-id="new-booking">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>New Booking</span></span>
+                                </a>
+                            </li>
+                            <li data-id="booking-history">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>History</span></span>
+                                </a>
+                            </li>
+                            <li data-id="cancellations">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Cancellations</span></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
+
+                    <!-- LEVEL 1: Customers -->
+                    <li data-id="customers">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-solid fa-users"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-solid fa-users"></i></span>
                                 <span>Customers</span>
                             </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="customer-directory">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Customer Directory</span></span>
+                                </a>
+                            </li>
+                            <li data-id="kyc-verification">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>KYC Verification</span></span>
+                                </a>
+                            </li>
+                            <li data-id="corporate-clients">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Corporate Clients</span></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
+
+                    <!-- LEVEL 1: Sales -->
+                    <li data-id="sales">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-solid fa-tag"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-solid fa-tag"></i></span>
                                 <span>Sales</span>
                             </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="invoices">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Invoices</span></span>
+                                </a>
+                            </li>
+                            <li data-id="quotations">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Quotations</span></span>
+                                </a>
+                            </li>
+                            <li data-id="discounts-offers">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Discounts & Offers</span></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
+
+                    <!-- LEVEL 1: Payments -->
+                    <li data-id="payments">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-regular fa-credit-card"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-regular fa-credit-card"></i></span>
                                 <span>Payments</span>
                             </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="transactions">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Transactions</span></span>
+                                </a>
+                            </li>
+                            <li data-id="payment-gateways">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Payment Gateways</span></span>
+                                </a>
+                            </li>
+                            <li data-id="refunds">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Refunds</span></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
+
+                    <!-- LEVEL 1: Reports -->
+                    <li data-id="reports">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-solid fa-chart-column"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-solid fa-chart-column"></i></span>
                                 <span>Reports</span>
                             </span>
                             <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="financial-reports">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Financial Reports</span></span>
+                                    <i class="fa-solid fa-chevron-right arrow"></i>
+                                </a>
+                                <ul class="cs-submenu">
+                                    <li data-id="annual-profit">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Annual Profit</span></span>
+                                        </a>
+                                    </li>
+                                    <li data-id="monthly-sales">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Monthly Sales</span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li data-id="fleet-analytics">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Fleet Analytics</span></span>
+                                    <i class="fa-solid fa-chevron-right arrow"></i>
+                                </a>
+                                <ul class="cs-submenu">
+                                    <li data-id="fuel-efficiency">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Fuel Efficiency</span></span>
+                                        </a>
+                                    </li>
+                                    <li data-id="vehicle-utilization">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Vehicle Utilization</span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li data-id="audit-logs">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Audit Logs</span></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
+
+                    <!-- LEVEL 1: Master Data -->
+                    <li data-id="master-data">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-solid fa-database"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-solid fa-database"></i></span>
                                 <span>Master Data</span>
                             </span>
                             <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="vehicle-models">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Vehicle Models</span></span>
+                                </a>
+                            </li>
+                            <li data-id="locations">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Locations</span></span>
+                                    <i class="fa-solid fa-chevron-right arrow"></i>
+                                </a>
+                                <ul class="cs-submenu">
+                                    <li data-id="regional-hubs">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Regional Hubs</span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li data-id="fuel-types">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Fuel Types</span></span>
+                                </a>
+                            </li>
+                            <li data-id="tariff-rates">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Tariff Rates</span></span>
+                                    <i class="fa-solid fa-chevron-right arrow"></i>
+                                </a>
+                                <ul class="cs-submenu">
+                                    <li data-id="rate-hourly">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Hourly</span></span>
+                                        </a>
+                                    </li>
+                                    <li data-id="rate-daily">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Daily</span></span>
+                                        </a>
+                                    </li>
+                                    <li data-id="rate-monthly">
+                                        <a href="#">
+                                            <span class="cs-menu-label"><span>Monthly</span></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
+
+                    <!-- LEVEL 1: Settings -->
+                    <li data-id="settings">
                         <a href="#">
                             <span class="cs-menu-label">
-                                <i class="fa-solid fa-gear"></i>
+                                <span class="cs-icon-wrapper"><i class="fa-solid fa-gear"></i></span>
                                 <span>Settings</span>
                             </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
                         </a>
+                        <ul class="cs-submenu">
+                            <li data-id="general-settings">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>General</span></span>
+                                </a>
+                            </li>
+                            <li data-id="roles-permissions">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>User Roles & Permissions</span></span>
+                                </a>
+                            </li>
+                            <li data-id="api-integrations">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>API Integrations</span></span>
+                                </a>
+                            </li>
+                            <li data-id="notifications-config">
+                                <a href="#">
+                                    <span class="cs-menu-label"><span>Notifications Config</span></span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </aside>
 
-        <!-- Top Header Section -->
+        <!-- ==========================================
+             TOP HEADER BAR
+        ========================================== -->
         <header class="cs-container-top">
             <div class="cs-container-top-left">
-                <div class="cs-hamburger" id="hamburgerBtn">
+                <div class="cs-hamburger" id="hamburgerBtn" title="Toggle Navigation">
                     <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
                 </div>
 
@@ -633,65 +1180,89 @@
 
                 <div class="cs-container-search" id="searchContainer">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Search menu...">
+                    <input type="text" id="menuSearchInput" placeholder="Search menu items... (Command Palette)" autocomplete="off">
+                    <div class="cs-search-palette" id="searchPalette"></div>
                 </div>
             </div>
 
             <div class="cs-container-right">
-                <!-- Notifications Dropdown -->
                 <div class="cs-notification-wrapper">
-                    <div class="cs-notification" id="notificationBtn">
+                    <div class="cs-notification" id="notifTrigger" title="Notifications">
                         <i class="fa-regular fa-bell"></i>
-                        <span class="cs-notification-badge" id="notificationBadge">10</span>
+                        <span class="cs-notification-badge" id="notifBadge">10</span>
                     </div>
-
-                    <div class="cs-notification-dropdown" id="notificationDropdown">
-                        <div class="cs-dropdown-header">NOTIFICATIONS</div>
-                        <div class="cs-notification-list" id="notificationList">
-                            <!-- Populated dynamically -->
+                    <div class="cs-dropdown-panel" id="notifPanel">
+                        <div class="cs-panel-header">
+                            <span>Notifications</span>
+                            <span style="font-size:0.75rem; color:#3b82f6; cursor:pointer;" id="clearAllNotifs">Clear all</span>
                         </div>
-                        <div class="cs-dropdown-footer">
-                            <a href="#">View All Notifications</a>
-                        </div>
+                        <div class="cs-panel-body" id="notifList"></div>
                     </div>
                 </div>
 
-                <!-- User Profile Dropdown -->
                 <div class="cs-profile-wrapper">
-                    <div class="cs-profile" id="profileBtn">
+                    <div class="cs-profile" id="profileTrigger">
                         <div class="cs-profile-avatar">SL</div>
                         <div class="cs-profile-details">
                             <span class="cs-profile-name">Logesh S</span>
                             <span class="cs-profile-role">Sales Executive</span>
                         </div>
                     </div>
-
                     <div class="cs-profile-dropdown" id="profileDropdown">
-                        <a href="#">
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <div class="cs-profile-menu-item">
+                            <i class="fa-solid fa-key"></i>
                             <span>Change Password</span>
-                        </a>
-                        <a href="#">
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        </div>
+                        <div class="cs-profile-menu-item danger">
+                            <i class="fa-solid fa-right-from-bracket"></i>
                             <span>Sign Out</span>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Main Body Section -->
-        <main class="cs-container-full">
-            <h2>Dashboard Overview</h2>
+        <!-- ==========================================
+             MAIN CONTENT MIDDLE AREA
+        ========================================== -->
+        <main class="cs-container-full" id="mainContent">
+            <div class="cs-content-header">
+                <div class="cs-breadcrumb" id="breadcrumb">
+                    <span>App</span> <i class="fa-solid fa-chevron-right" style="font-size:0.6rem;"></i>
+                    <span class="active-crumb" id="breadcrumbActive">Bookings</span>
+                </div>
+                <h1 class="cs-content-title" id="pageTitle">Bookings Dashboard</h1>
+            </div>
+
+            <p style="color:#64748b; font-size:0.95rem; line-height:1.6;">
+                Welcome to your interactive workspace. Navigate through the multi-level nested menus on the left sidebar to switch views, search options dynamically, or toggle sidebar visibility.
+            </p>
+
+            <div class="cs-card-grid">
+                <div class="cs-dashboard-card">
+                    <div class="cs-card-title">Total Active Bookings</div>
+                    <div class="cs-card-value">1,284</div>
+                </div>
+                <div class="cs-dashboard-card">
+                    <div class="cs-card-title">Fleet Utilization</div>
+                    <div class="cs-card-value">84.2%</div>
+                </div>
+                <div class="cs-dashboard-card">
+                    <div class="cs-card-title">Monthly Revenue</div>
+                    <div class="cs-card-value">$42,500</div>
+                </div>
+            </div>
         </main>
 
-        <!-- Bottom Footer Section -->
+        <!-- ==========================================
+             BOTTOM FOOTER
+        ========================================== -->
         <footer class="cs-container-bottom">
             <div class="cs-container-bottom-left">
                 &copy; 2026 Campus Stack. All rights reserved.
             </div>
             <div class="cs-container-bottom-right">
-                v1.0.0
+                System Status: <span style="color:#10b981; font-weight:600;">Online</span> (v2.4.0)
             </div>
         </footer>
 
@@ -706,170 +1277,351 @@
             const mobileSearchOpen = document.getElementById('mobileSearchOpen');
             const mobileSearchClose = document.getElementById('mobileSearchClose');
             const searchContainer = document.getElementById('searchContainer');
+            const menuSearchInput = document.getElementById('menuSearchInput');
+            const searchPalette = document.getElementById('searchPalette');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const noResultsMsg = document.getElementById('noResultsMsg');
+            const pageTitle = document.getElementById('pageTitle');
+            const breadcrumbActive = document.getElementById('breadcrumbActive');
+            const breadcrumb = document.getElementById('breadcrumb');
 
-            // Sidebar Toggle Logic
+            /* ====================================================
+               1. UNLIMITED MULTI-LEVEL ACCORDION & CLICK HANDLER
+            ==================================================== */
+            const allLinks = sidebarMenu.querySelectorAll('a');
+
+            allLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const parentLi = this.parentElement;
+                    const childSubmenu = parentLi.querySelector(':scope > .cs-submenu');
+
+                    if (childSubmenu) {
+                        e.preventDefault();
+                        if (mainContainer.classList.contains('sidebar-collapsed')) {
+                            mainContainer.classList.remove('sidebar-collapsed');
+                        }
+
+                        const isOpen = parentLi.classList.contains('open');
+                        const siblingLis = parentLi.parentElement.querySelectorAll(':scope > li');
+                        siblingLis.forEach(sibling => {
+                            if (sibling !== parentLi) {
+                                closeSubmenuTree(sibling);
+                            }
+                        });
+
+                        if (isOpen) {
+                            closeSubmenuTree(parentLi);
+                        } else {
+                            openSubmenu(parentLi);
+                        }
+                    } else {
+                        e.preventDefault();
+                        setActiveMenuItem(parentLi);
+                        if (window.innerWidth <= 768) {
+                            closeMobileSidebar();
+                        }
+                    }
+                });
+            });
+
+            function openSubmenu(liElement) {
+                liElement.classList.add('open');
+                const submenu = liElement.querySelector(':scope > .cs-submenu');
+                if (submenu) {
+                    submenu.style.display = 'block';
+                }
+            }
+
+            function closeSubmenuTree(liElement) {
+                liElement.classList.remove('open');
+                const submenu = liElement.querySelector(':scope > .cs-submenu');
+                if (submenu) {
+                    submenu.style.display = 'none';
+                    const innerOpenItems = submenu.querySelectorAll('li.open');
+                    innerOpenItems.forEach(inner => {
+                        inner.classList.remove('open');
+                        const innerSub = inner.querySelector('.cs-submenu');
+                        if (innerSub) innerSub.style.display = 'none';
+                    });
+                }
+            }
+
+            /* ====================================================
+               2. ACTIVE PATH HIGHLIGHTING & BREADCRUMB UPDATE
+            ==================================================== */
+            function setActiveMenuItem(targetLi) {
+                const allItems = sidebarMenu.querySelectorAll('li');
+                allItems.forEach(item => {
+                    item.classList.remove('active', 'active-path');
+                });
+
+                targetLi.classList.add('active');
+
+                const pathNames = [];
+                let current = targetLi;
+
+                while (current && current !== sidebarMenu) {
+                    if (current.tagName === 'LI') {
+                        const labelText = current.querySelector(':scope > a .cs-menu-label span:not(.cs-icon-wrapper)').textContent.trim();
+                        pathNames.unshift(labelText);
+
+                        if (current !== targetLi) {
+                            current.classList.add('active-path');
+                            openSubmenu(current);
+                        }
+                    }
+                    current = current.parentElement;
+                }
+
+                const leafName = pathNames[pathNames.length - 1];
+                pageTitle.textContent = leafName + " Overview";
+                breadcrumbActive.textContent = leafName;
+
+                let breadcrumbHTML = `<span>App</span>`;
+                pathNames.forEach((name, index) => {
+                    const isLast = index === pathNames.length - 1;
+                    breadcrumbHTML += ` <i class="fa-solid fa-chevron-right" style="font-size:0.6rem;"></i> `;
+                    if (isLast) {
+                        breadcrumbHTML += `<span class="active-crumb">${name}</span>`;
+                    } else {
+                        breadcrumbHTML += `<span>${name}</span>`;
+                    }
+                });
+                breadcrumb.innerHTML = breadcrumbHTML;
+            }
+
+            const initialActive = sidebarMenu.querySelector('li.active');
+            if (initialActive) {
+                setActiveMenuItem(initialActive);
+            }
+
+            /* ====================================================
+               3. VS CODE QUICK-OPEN COMMAND PALETTE SEARCH
+            ==================================================== */
+            function buildSearchIndex() {
+                const items = [];
+                const allLis = sidebarMenu.querySelectorAll('li');
+
+                allLis.forEach(li => {
+                    const link = li.querySelector(':scope > a');
+                    const labelSpan = link.querySelector('.cs-menu-label span:not(.cs-icon-wrapper)');
+                    if (!labelSpan) return;
+
+                    const title = labelSpan.textContent.trim();
+                    const icon = link.querySelector('.cs-icon-wrapper i')?.className || 'fa-solid fa-angle-right';
+
+                    const pathSegments = [];
+                    let parent = li;
+                    while (parent && parent !== sidebarMenu) {
+                        if (parent.tagName === 'LI') {
+                            const pText = parent.querySelector(':scope > a .cs-menu-label span:not(.cs-icon-wrapper)')?.textContent.trim();
+                            if (pText) pathSegments.unshift(pText);
+                        }
+                        parent = parent.parentElement;
+                    }
+
+                    items.push({
+                        element: li,
+                        title: title,
+                        icon: icon,
+                        path: pathSegments.join(' > ')
+                    });
+                });
+                return items;
+            }
+
+            const searchItems = buildSearchIndex();
+
+            menuSearchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                searchPalette.innerHTML = '';
+
+                if (query === '') {
+                    searchPalette.classList.remove('active');
+                    return;
+                }
+
+                const matches = searchItems.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    item.path.toLowerCase().includes(query)
+                );
+
+                if (matches.length === 0) {
+                    searchPalette.innerHTML = '<div style="padding:10px; font-size:0.8rem; color:#64748b; text-align:center;">No matching routes found</div>';
+                } else {
+                    matches.forEach(match => {
+                        const div = document.createElement('div');
+                        div.className = 'cs-palette-item';
+                        div.innerHTML = `
+                            <span class="item-title"><i class="${match.icon}"></i> ${match.title}</span>
+                            <span class="item-path">${match.path}</span>
+                        `;
+                        div.addEventListener('click', () => {
+                            setActiveMenuItem(match.element);
+                            searchPalette.classList.remove('active');
+                            menuSearchInput.value = '';
+
+                            if (searchContainer.classList.contains('active')) {
+                                searchContainer.classList.remove('active');
+                                mobileSearchClose.classList.remove('active');
+                            }
+                        });
+                        searchPalette.appendChild(div);
+                    });
+                }
+                searchPalette.classList.add('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchContainer.contains(e.target)) {
+                    searchPalette.classList.remove('active');
+                }
+            });
+
+            /* ====================================================
+               4. NOTIFICATIONS DROPDOWN & SWIPE-TO-DISMISS
+            ==================================================== */
+            const notifTrigger = document.getElementById('notifTrigger');
+            const notifPanel = document.getElementById('notifPanel');
+            const notifList = document.getElementById('notifList');
+            const notifBadge = document.getElementById('notifBadge');
+            const clearAllNotifs = document.getElementById('clearAllNotifs');
+
+            let notifications = Array.from({ length: 10 }, (_, i) => ({
+                id: i + 1,
+                title: `System Alert #${i + 1}`,
+                time: `${(i + 1) * 5}m ago`
+            }));
+
+            function renderNotifications() {
+                notifList.innerHTML = '';
+                notifBadge.textContent = notifications.length;
+                if (notifications.length === 0) {
+                    notifBadge.style.display = 'none';
+                    notifList.innerHTML = '<div style="padding:16px; text-align:center; font-size:0.8rem; color:#94a3b8;">No new notifications</div>';
+                    return;
+                }
+                notifBadge.style.display = 'flex';
+
+                notifications.forEach(item => {
+                    const el = document.createElement('div');
+                    el.className = 'cs-notification-item';
+                    el.innerHTML = `
+                        <div>
+                            <div class="notif-text">${item.title}</div>
+                            <div class="notif-time">${item.time}</div>
+                        </div>
+                        <i class="fa-solid fa-xmark dismiss-btn"></i>
+                    `;
+
+                    // Drag swipe support
+                    let startX = 0;
+                    el.addEventListener('touchstart', (e) => startX = e.touches[0].clientX);
+                    el.addEventListener('touchmove', (e) => {
+                        let diff = e.touches[0].clientX - startX;
+                        if (diff > 0) el.style.transform = `translateX(${diff}px)`;
+                    });
+                    el.addEventListener('touchend', (e) => {
+                        let diff = e.changedTouches[0].clientX - startX;
+                        if (diff > 60) {
+                            removeNotif(item.id);
+                        } else {
+                            el.style.transform = 'translateX(0)';
+                        }
+                    });
+
+                    el.querySelector('.dismiss-btn').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        removeNotif(item.id);
+                    });
+
+                    notifList.appendChild(el);
+                });
+            }
+
+            function removeNotif(id) {
+                notifications = notifications.filter(n => n.id !== id);
+                renderNotifications();
+            }
+
+            clearAllNotifs.addEventListener('click', () => {
+                notifications = [];
+                renderNotifications();
+            });
+
+            notifTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notifPanel.classList.toggle('active');
+                profileDropdown.classList.remove('active');
+            });
+
+            renderNotifications();
+
+            /* ====================================================
+               5. PROFILE DROPDOWN
+            ==================================================== */
+            const profileTrigger = document.getElementById('profileTrigger');
+            const profileDropdown = document.getElementById('profileDropdown');
+
+            profileTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('active');
+                notifPanel.classList.remove('active');
+            });
+
+            document.addEventListener('click', () => {
+                notifPanel.classList.remove('active');
+                profileDropdown.classList.remove('active');
+            });
+
+            /* ====================================================
+               6. RESPONSIVE SIDEBAR TOGGLE & MOBILE DRAWER
+            ==================================================== */
             hamburgerBtn.addEventListener('click', () => {
                 if (window.innerWidth <= 768) {
-                    sidebar.classList.toggle('mobile-open');
-                    backdrop.classList.toggle('active');
+                    toggleMobileSidebar();
                 } else {
                     mainContainer.classList.toggle('sidebar-collapsed');
                 }
             });
 
-            backdrop.addEventListener('click', () => {
-                sidebar.classList.remove('mobile-open');
-                backdrop.classList.remove('active');
-            });
-
-            // Mobile Search Controls
-            mobileSearchOpen.addEventListener('click', () => {
-                searchContainer.classList.add('active');
-                mobileSearchClose.classList.add('active');
-            });
-
-            mobileSearchClose.addEventListener('click', () => {
-                searchContainer.classList.remove('active');
-                mobileSearchClose.classList.remove('active');
-            });
-
-            // Sidebar Active Item Selection
-            const menuItems = document.querySelectorAll('.cs-sidebar-menu li');
-            menuItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    menuItems.forEach(el => el.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-
-            // Header Dropdowns Handlers
-            const profileBtn = document.getElementById('profileBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-            const notificationBtn = document.getElementById('notificationBtn');
-            const notificationDropdown = document.getElementById('notificationDropdown');
-
-            profileBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                notificationDropdown.classList.remove('show');
-                profileDropdown.classList.toggle('show');
-            });
-
-            notificationBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                profileDropdown.classList.remove('show');
-                notificationDropdown.classList.toggle('show');
-            });
-
-            document.addEventListener('click', () => {
-                profileDropdown.classList.remove('show');
-                notificationDropdown.classList.remove('show');
-            });
-
-            profileDropdown.addEventListener('click', (e) => e.stopPropagation());
-            notificationDropdown.addEventListener('click', (e) => e.stopPropagation());
-
-            // Initialize Notifications (Default count = 10)
-            const notificationList = document.getElementById('notificationList');
-            const notificationBadge = document.getElementById('notificationBadge');
-
-            const initialNotifications = [
-                "New vehicle booking received.",
-                "Payment confirmed for Booking #1042.",
-                "Vehicle Maintenance alert: SUV #4.",
-                "New customer account created.",
-                "Sales report for August is ready.",
-                "System maintenance scheduled.",
-                "Refund request initiated.",
-                "Driver assigned to Booking #1049.",
-                "Security check completed.",
-                "Master data updated successfully."
-            ];
-
-            function renderNotifications() {
-                notificationList.innerHTML = '';
-                initialNotifications.forEach((text, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'cs-notification-item';
-                    item.dataset.index = index;
-
-                    item.innerHTML = `
-                        <span class="cs-notification-text">${text}</span>
-                        <i class="fa-solid fa-xmark cs-notification-close"></i>
-                    `;
-
-                    // Drag-to-dismiss support
-                    let startX = 0;
-                    let currentX = 0;
-                    let isDragging = false;
-
-                    const onStart = (e) => {
-                        startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-                        isDragging = true;
-                        item.style.transition = 'none';
-                    };
-
-                    const onMove = (e) => {
-                        if (!isDragging) return;
-                        currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-                        const diffX = currentX - startX;
-                        if (diffX > 0) {
-                            item.style.transform = `translateX(${diffX}px)`;
-                        }
-                    };
-
-                    const onEnd = () => {
-                        if (!isDragging) return;
-                        isDragging = false;
-                        item.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease';
-                        const diffX = currentX - startX;
-                        if (diffX > 80) {
-                            dismissItem(item);
-                        } else {
-                            item.style.transform = 'translateX(0)';
-                        }
-                    };
-
-                    item.addEventListener('mousedown', onStart);
-                    item.addEventListener('mousemove', onMove);
-                    item.addEventListener('mouseup', onEnd);
-                    item.addEventListener('mouseleave', onEnd);
-
-                    item.addEventListener('touchstart', onStart);
-                    item.addEventListener('touchmove', onMove);
-                    item.addEventListener('touchend', onEnd);
-
-                    // X Icon Click Close
-                    const closeBtn = item.querySelector('.cs-notification-close');
-                    closeBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        dismissItem(item);
-                    });
-
-                    notificationList.appendChild(item);
-                });
-                updateBadgeCount();
-            }
-
-            function dismissItem(item) {
-                item.classList.add('dismissing');
-                setTimeout(() => {
-                    item.remove();
-                    updateBadgeCount();
-                }, 200);
-            }
-
-            function updateBadgeCount() {
-                const count = notificationList.querySelectorAll('.cs-notification-item').length;
-                notificationBadge.textContent = count;
-                if (count === 0) {
-                    notificationBadge.style.display = 'none';
-                    notificationList.innerHTML = '<div style="padding:16px;text-align:center;font-size:0.85rem;color:#94a3b8;">No notifications left</div>';
+            function toggleMobileSidebar() {
+                const isOpen = sidebar.classList.contains('mobile-open');
+                if (isOpen) {
+                    closeMobileSidebar();
                 } else {
-                    notificationBadge.style.display = 'flex';
+                    sidebar.classList.add('mobile-open');
+                    backdrop.classList.add('active');
                 }
             }
 
-            renderNotifications();
+            function closeMobileSidebar() {
+                sidebar.classList.remove('mobile-open');
+                backdrop.classList.remove('active');
+            }
+
+            backdrop.addEventListener('click', closeMobileSidebar);
+
+            if (mobileSearchOpen && mobileSearchClose && searchContainer) {
+                mobileSearchOpen.addEventListener('click', () => {
+                    searchContainer.classList.add('active');
+                    mobileSearchClose.classList.add('active');
+                    menuSearchInput.focus();
+                });
+
+                mobileSearchClose.addEventListener('click', () => {
+                    searchContainer.classList.remove('active');
+                    mobileSearchClose.classList.remove('active');
+                    searchPalette.classList.remove('active');
+                });
+            }
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('mobile-open');
+                    backdrop.classList.remove('active');
+                }
+            });
         });
     </script>
 </body>
