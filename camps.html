@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Inter) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background-color: #f8fafc;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Base Grid Layout */
+        .cs-main-container-structure {
+            width: 100%;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: 64px 1fr 42px;
+            grid-template-areas:
+                "left top"
+                "left middle"
+                "left bottom";
+            transition: grid-template-columns 0.3s ease;
+        }
+
+        /* Collapsed Sidebar Layout for Desktop */
+        .cs-main-container-structure.sidebar-collapsed {
+            grid-template-columns: 70px 1fr;
+        }
+
+        .cs-main-container-structure.sidebar-collapsed .cs-menu-label span,
+        .cs-main-container-structure.sidebar-collapsed .arrow,
+        .cs-main-container-structure.sidebar-collapsed .cs-left-top img {
+            display: none;
+        }
+
+        .cs-main-container-structure.sidebar-collapsed .cs-left-top {
+            justify-content: center;
+        }
+
+        .cs-main-container-structure.sidebar-collapsed .cs-sidebar-menu a {
+            justify-content: center;
+            padding: 0.75rem 0;
+        }
+
+        /* Left Sidebar Structure */
+        .cs-container-left {
+            grid-area: left;
+            width: 100%;
+            height: 100vh;
+            background-color: #0d192b;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #1e293b;
+            z-index: 100;
+        }
+
+        .cs-container-left .cs-left-top {
+            height: 64px;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cs-container-left .cs-left-top img {
+            max-width: 180px;
+            max-height: 40px;
+            object-fit: contain;
+        }
+
+        .cs-container-left .cs-left-full {
+            width: 100%;
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 0.5rem;
+        }
+
+        .cs-sidebar-menu li {
+            margin-bottom: 0.25rem;
+        }
+
+        .cs-sidebar-menu a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            color: #94a3b8;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .cs-sidebar-menu a:hover,
+        .cs-sidebar-menu li.active > a {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+
+        .cs-menu-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .cs-menu-label i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .cs-sidebar-menu .arrow {
+            font-size: 0.75rem;
+        }
+
+        /* Top Header Structure */
+        .cs-container-top {
+            grid-area: top;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            position: relative;
+        }
+
+        .cs-container-top-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cs-hamburger {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+        }
+
+        .cs-hamburger:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .cs-search-trigger,
+        .cs-search-close {
+            display: none;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .cs-container-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            width: 260px;
+        }
+
+        .cs-container-search i {
+            color: #94a3b8;
+        }
+
+        .cs-container-search input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 0.875rem;
+            color: #334155;
+        }
+
+        .cs-container-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        /* Notification Icon & Dropdown Container */
+        .cs-notification-wrapper {
+            position: relative;
+        }
+
+        .cs-notification {
+            position: relative;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 1.25rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .cs-notification:hover {
+            background-color: #f1f5f9;
+        }
+
+        .cs-notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 4px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Notification Dropdown Panel */
+        .cs-notification-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            width: 340px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 200;
+            overflow: hidden;
+        }
+
+        .cs-notification-dropdown.show {
+            display: block;
+        }
+
+        .cs-dropdown-header {
+            text-align: center;
+            padding: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #334155;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+            text-transform: uppercase;
+        }
+
+        .cs-notification-list {
+            max-height: 300px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Swipeable Notification Item */
+        .cs-notification-item {
+            position: relative;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            touch-action: pan-y;
+            transition: transform 0.1s ease-out, opacity 0.2s ease;
+        }
+
+        .cs-notification-item.dismissing {
+            transform: translateX(100%) !important;
+            opacity: 0;
+        }
+
+        .cs-notification-text {
+            font-size: 0.85rem;
+            color: #475569;
+            padding-right: 10px;
+        }
+
+        .cs-notification-close {
+            cursor: pointer;
+            color: #94a3b8;
+            font-size: 1rem;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .cs-notification-close:hover {
+            color: #ef4444;
+        }
+
+        .cs-dropdown-footer {
+            text-align: center;
+            padding: 12px;
+            border-top: 1px solid #e2e8f0;
+            background: #ffffff;
+        }
+
+        .cs-dropdown-footer a {
+            color: #1e1b4b;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .cs-dropdown-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Profile & Dropdown Menu */
+        .cs-profile-wrapper {
+            position: relative;
+        }
+
+        .cs-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .cs-profile:hover {
+            background-color: #f1f5f9;
+        }
+
+        .cs-profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #1e1b4b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .cs-profile-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cs-profile-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .cs-profile-role {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        /* Profile Dropdown Menu */
+        .cs-profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            width: 200px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 200;
+            overflow: hidden;
+        }
+
+        .cs-profile-dropdown.show {
+            display: block;
+        }
+
+        .cs-profile-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            color: #1e1b4b;
+            font-weight: 500;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.2s;
+        }
+
+        .cs-profile-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .cs-profile-dropdown a:hover {
+            background-color: #f8fafc;
+        }
+
+        .cs-profile-dropdown i {
+            font-size: 1.1rem;
+            color: #1e1b4b;
+        }
+
+        /* Main Content Structure */
+        .cs-container-full {
+            grid-area: middle;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        /* Bottom Footer Structure */
+        .cs-container-bottom {
+            grid-area: bottom;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        /* Mobile Backdrop */
+        .cs-sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+        }
+
+        .cs-sidebar-backdrop.active {
+            display: block;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .cs-main-container-structure {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "top"
+                    "middle"
+                    "bottom";
+            }
+
+            .cs-container-left {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                width: 280px;
+                transition: left 0.3s ease;
+            }
+
+            .cs-container-left.mobile-open {
+                left: 0;
+            }
+
+            .cs-search-trigger {
+                display: block;
+            }
+
+            .cs-container-search {
+                display: none;
+            }
+
+            .cs-container-search.active {
+                display: flex;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10;
+                border-radius: 0;
+                background: #ffffff;
+                padding: 0 1rem;
+            }
+
+            .cs-search-close.active {
+                display: block;
+                position: absolute;
+                right: 1rem;
+                z-index: 11;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cs-sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="cs-main-container-structure" id="mainContainer">
+
+        <!-- Sidebar Section -->
+        <aside class="cs-container-left" id="sidebar">
+            <div class="cs-left-top">
+                <img src="https://cdn.campusstack.in/clients/csc/logo.png" alt="Company Logo">
+            </div>
+            <div class="cs-left-full">
+                <ul class="cs-sidebar-menu" id="sidebarMenu">
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-solid fa-house"></i>
+                                <span>Dashboard</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-solid fa-car-side"></i>
+                                <span>Vehicles</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-regular fa-calendar-check"></i>
+                                <span>Bookings</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-solid fa-users"></i>
+                                <span>Customers</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-solid fa-tag"></i>
+                                <span>Sales</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-regular fa-credit-card"></i>
+                                <span>Payments</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-solid fa-chart-column"></i>
+                                <span>Reports</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-solid fa-database"></i>
+                                <span>Master Data</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-right arrow"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="cs-menu-label">
+                                <i class="fa-solid fa-gear"></i>
+                                <span>Settings</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Top Header Section -->
+        <header class="cs-container-top">
+            <div class="cs-container-top-left">
+                <div class="cs-hamburger" id="hamburgerBtn">
+                    <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
+                </div>
+
+                <div class="cs-search-trigger" id="mobileSearchOpen">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <div class="cs-search-close" id="mobileSearchClose">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+
+                <div class="cs-container-search" id="searchContainer">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search menu...">
+                </div>
+            </div>
+
+            <div class="cs-container-right">
+                <!-- Notifications Dropdown -->
+                <div class="cs-notification-wrapper">
+                    <div class="cs-notification" id="notificationBtn">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="cs-notification-badge" id="notificationBadge">10</span>
+                    </div>
+
+                    <div class="cs-notification-dropdown" id="notificationDropdown">
+                        <div class="cs-dropdown-header">NOTIFICATIONS</div>
+                        <div class="cs-notification-list" id="notificationList">
+                            <!-- Populated dynamically -->
+                        </div>
+                        <div class="cs-dropdown-footer">
+                            <a href="#">View All Notifications</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Profile Dropdown -->
+                <div class="cs-profile-wrapper">
+                    <div class="cs-profile" id="profileBtn">
+                        <div class="cs-profile-avatar">SL</div>
+                        <div class="cs-profile-details">
+                            <span class="cs-profile-name">Logesh S</span>
+                            <span class="cs-profile-role">Sales Executive</span>
+                        </div>
+                    </div>
+
+                    <div class="cs-profile-dropdown" id="profileDropdown">
+                        <a href="#">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            <span>Change Password</span>
+                        </a>
+                        <a href="#">
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body Section -->
+        <main class="cs-container-full">
+            <h2>Dashboard Overview</h2>
+        </main>
+
+        <!-- Bottom Footer Section -->
+        <footer class="cs-container-bottom">
+            <div class="cs-container-bottom-left">
+                &copy; 2026 Campus Stack. All rights reserved.
+            </div>
+            <div class="cs-container-bottom-right">
+                v1.0.0
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mainContainer = document.getElementById('mainContainer');
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const mobileSearchOpen = document.getElementById('mobileSearchOpen');
+            const mobileSearchClose = document.getElementById('mobileSearchClose');
+            const searchContainer = document.getElementById('searchContainer');
+
+            // Sidebar Toggle Logic
+            hamburgerBtn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.toggle('mobile-open');
+                    backdrop.classList.toggle('active');
+                } else {
+                    mainContainer.classList.toggle('sidebar-collapsed');
+                }
+            });
+
+            backdrop.addEventListener('click', () => {
+                sidebar.classList.remove('mobile-open');
+                backdrop.classList.remove('active');
+            });
+
+            // Mobile Search Controls
+            mobileSearchOpen.addEventListener('click', () => {
+                searchContainer.classList.add('active');
+                mobileSearchClose.classList.add('active');
+            });
+
+            mobileSearchClose.addEventListener('click', () => {
+                searchContainer.classList.remove('active');
+                mobileSearchClose.classList.remove('active');
+            });
+
+            // Sidebar Active Item Selection
+            const menuItems = document.querySelectorAll('.cs-sidebar-menu li');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    menuItems.forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Header Dropdowns Handlers
+            const profileBtn = document.getElementById('profileBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            const notificationBtn = document.getElementById('notificationBtn');
+            const notificationDropdown = document.getElementById('notificationDropdown');
+
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notificationDropdown.classList.remove('show');
+                profileDropdown.classList.toggle('show');
+            });
+
+            notificationBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.remove('show');
+                notificationDropdown.classList.toggle('show');
+            });
+
+            document.addEventListener('click', () => {
+                profileDropdown.classList.remove('show');
+                notificationDropdown.classList.remove('show');
+            });
+
+            profileDropdown.addEventListener('click', (e) => e.stopPropagation());
+            notificationDropdown.addEventListener('click', (e) => e.stopPropagation());
+
+            // Initialize Notifications (Default count = 10)
+            const notificationList = document.getElementById('notificationList');
+            const notificationBadge = document.getElementById('notificationBadge');
+
+            const initialNotifications = [
+                "New vehicle booking received.",
+                "Payment confirmed for Booking #1042.",
+                "Vehicle Maintenance alert: SUV #4.",
+                "New customer account created.",
+                "Sales report for August is ready.",
+                "System maintenance scheduled.",
+                "Refund request initiated.",
+                "Driver assigned to Booking #1049.",
+                "Security check completed.",
+                "Master data updated successfully."
+            ];
+
+            function renderNotifications() {
+                notificationList.innerHTML = '';
+                initialNotifications.forEach((text, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'cs-notification-item';
+                    item.dataset.index = index;
+
+                    item.innerHTML = `
+                        <span class="cs-notification-text">${text}</span>
+                        <i class="fa-solid fa-xmark cs-notification-close"></i>
+                    `;
+
+                    // Drag-to-dismiss support
+                    let startX = 0;
+                    let currentX = 0;
+                    let isDragging = false;
+
+                    const onStart = (e) => {
+                        startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                        isDragging = true;
+                        item.style.transition = 'none';
+                    };
+
+                    const onMove = (e) => {
+                        if (!isDragging) return;
+                        currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                        const diffX = currentX - startX;
+                        if (diffX > 0) {
+                            item.style.transform = `translateX(${diffX}px)`;
+                        }
+                    };
+
+                    const onEnd = () => {
+                        if (!isDragging) return;
+                        isDragging = false;
+                        item.style.transition = 'transform 0.2s ease-out, opacity 0.2s ease';
+                        const diffX = currentX - startX;
+                        if (diffX > 80) {
+                            dismissItem(item);
+                        } else {
+                            item.style.transform = 'translateX(0)';
+                        }
+                    };
+
+                    item.addEventListener('mousedown', onStart);
+                    item.addEventListener('mousemove', onMove);
+                    item.addEventListener('mouseup', onEnd);
+                    item.addEventListener('mouseleave', onEnd);
+
+                    item.addEventListener('touchstart', onStart);
+                    item.addEventListener('touchmove', onMove);
+                    item.addEventListener('touchend', onEnd);
+
+                    // X Icon Click Close
+                    const closeBtn = item.querySelector('.cs-notification-close');
+                    closeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        dismissItem(item);
+                    });
+
+                    notificationList.appendChild(item);
+                });
+                updateBadgeCount();
+            }
+
+            function dismissItem(item) {
+                item.classList.add('dismissing');
+                setTimeout(() => {
+                    item.remove();
+                    updateBadgeCount();
+                }, 200);
+            }
+
+            function updateBadgeCount() {
+                const count = notificationList.querySelectorAll('.cs-notification-item').length;
+                notificationBadge.textContent = count;
+                if (count === 0) {
+                    notificationBadge.style.display = 'none';
+                    notificationList.innerHTML = '<div style="padding:16px;text-align:center;font-size:0.85rem;color:#94a3b8;">No notifications left</div>';
+                } else {
+                    notificationBadge.style.display = 'flex';
+                }
+            }
+
+            renderNotifications();
+        });
+    </script>
+</body>
+</html>
